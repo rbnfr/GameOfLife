@@ -108,6 +108,9 @@ while not endGame:
         draw_text(screen, str("Running"), 15, (width - (width*0.95)), (height-(height*0.99)), (0,255,0), bgColor)
     else:
         draw_text(screen, str("Stopped"), 15, (width - (width*0.95)), (height-(height*0.99)), (255,0,0), bgColor)
+        
+    if aliveCells == 0:
+        pauseExecution = True
 
     draw_text(screen, ("Alive Cells: " + str(aliveCells)), 30, (width/2), (height-(height*0.99)), (255,255,255), bgColor)
     aliveCells = 0
