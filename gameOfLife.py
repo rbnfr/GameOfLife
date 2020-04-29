@@ -27,7 +27,7 @@ aliveCells = 0
 pauseExecution = True
 endGame = False
 activateOutput = False
-sleepTime = 0.2
+sleepTime = 0.1
 
 fontName = pygame.font.match_font('arial')
 fontColor = (255,255,255)
@@ -89,6 +89,14 @@ while not endGame:
                 # Rule 2: An alive cell with less than 2 or more than 3 alive cells near will die.
                 elif gameState[x,y] == 1 and (nNeighbours < 2 or nNeighbours > 3):
                     newGameState[x,y] = 0
+                elif gameState[x,y] == 1 and (nNeighbours >=3):
+                    newGameState[x,y] = 2
+                elif gameState[x,y] == 2 and (nNeighbours == 2):
+                    newGameState[x,y] = 1
+                elif gameState[x,y] == 2 and (nNeighbours == 1):
+                    newGameState[x,y] = 0
+                
+                
 
             # Create the polygon of each cell to draw.
             polygon = [
@@ -100,6 +108,9 @@ while not endGame:
             
             if newGameState[x,y] == 0:
                 pygame.draw.polygon(screen, (128, 128, 128), polygon, 1) # Background, points, polygon, line width. Hollow Gray
+            elif newGameState[x,y] == 2:
+                aliveCells += 1
+                pygame.draw.polygon(screen, (255, 0, 0), polygon, 0) # Background, points, polygon, line width. Hollow Gray
             else:
                 aliveCells += 1
                 pygame.draw.polygon(screen, (255, 255, 255), polygon, 0) # Background, points, polygon, line width. Solid White
