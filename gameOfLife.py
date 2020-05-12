@@ -1,4 +1,5 @@
 # Game of life
+# Cell types version
 
 import numpy as np
 import pygame
