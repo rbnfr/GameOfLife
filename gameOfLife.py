@@ -61,12 +61,7 @@ while not endGame:
             posX,posY = pygame.mouse.get_pos()
             cellX = int(np.floor(posX / dimCellWidth))
             cellY = int(np.floor(posY / dimCellHeight))
-            if newGameState[cellX, cellY] == 0:
-                newGameState[cellX, cellY] = 1
-            elif newGameState[cellX, cellY] == 1:
-                newGameState[cellX, cellY] = 2
-            elif newGameState[cellX, cellY] == 2:
-                newGameState[cellX, cellY] = 0
+            newGameState[cellX, cellY] = not mouseClick[2]
 
         if mouseClick[1]:
             pauseExecution = not pauseExecution
