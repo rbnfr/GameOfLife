@@ -89,18 +89,44 @@ while not endGame:
                     + gameState[(x + 1) % cellsX, (y + 1) % cellsY]
                 )
 
-                # Rule 1: A dead cell with 3 alive neighbours will revive.
-                if gameState[x,y] == 0 and nNeighbours == 3:
+                nWhiteNeighbours = (
+                      ((gameState[(x - 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y - 1) % cellsY]) == 1 else 0)
+                    + ((gameState[x       % cellsX, (y - 1) % cellsY]) if (gameState[x       % cellsX, (y - 1) % cellsY]) == 1 else 0)
+                    + ((gameState[(x + 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y - 1) % cellsY]) == 1 else 0)
+                    + ((gameState[(x - 1) % cellsX,  y      % cellsY]) if (gameState[(x - 1) % cellsX,  y      % cellsY]) == 1 else 0)
+                    + ((gameState[(x + 1) % cellsX,  y      % cellsY]) if (gameState[(x + 1) % cellsX,  y      % cellsY]) == 1 else 0)
+                    + ((gameState[(x - 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y + 1) % cellsY]) == 1 else 0)
+                    + ((gameState[x      % cellsX,  (y + 1) % cellsY]) if (gameState[x      % cellsX,  (y + 1) % cellsY]) == 1 else 0)
+                    + ((gameState[(x + 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y + 1) % cellsY]) == 1 else 0)
+                )
+
+                nRedNeighbours = int((
+                      ((gameState[(x - 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y - 1) % cellsY]) == 2 else 0)
+                    + ((gameState[x       % cellsX, (y - 1) % cellsY]) if (gameState[x       % cellsX, (y - 1) % cellsY]) == 2 else 0)
+                    + ((gameState[(x + 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y - 1) % cellsY]) == 2 else 0)
+                    + ((gameState[(x - 1) % cellsX,  y      % cellsY]) if (gameState[(x - 1) % cellsX,  y      % cellsY]) == 2 else 0)
+                    + ((gameState[(x + 1) % cellsX,  y      % cellsY]) if (gameState[(x + 1) % cellsX,  y      % cellsY]) == 2 else 0)
+                    + ((gameState[(x - 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y + 1) % cellsY]) == 2 else 0)
+                    + ((gameState[x      % cellsX,  (y + 1) % cellsY]) if (gameState[x      % cellsX,  (y + 1) % cellsY]) == 2 else 0)
+                    + ((gameState[(x + 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y + 1) % cellsY]) == 2 else 0)
+                ) / 2)
+
+                # Rule 1: A white dead cell with 3 alive white neighbours will revive.
+                if gameState[x,y] == 0 and nWhiteNeighbours == 3:
                     newGameState[x,y] = 1
                 # Rule 2: An alive cell with less than 2 or more than 3 alive cells near will die.
-                elif gameState[x,y] == 1 and (nNeighbours < 2 or nNeighbours > 3):
+                elif gameState[x,y] == 1 and (nWhiteNeighbours < 2 or nWhiteNeighbours > 3):
                     newGameState[x,y] = 0
-                elif gameState[x,y] == 1 and (nNeighbours >=3):
+                elif gameState[x,y] == 0 and (nRedNeighbours == 3):
                     newGameState[x,y] = 2
-                elif gameState[x,y] == 2 and (nNeighbours == 2):
-                    newGameState[x,y] = 1
-                elif gameState[x,y] == 2 and (nNeighbours == 1):
+                elif gameState[x,y] == 2 and (nRedNeighbours < 2 or nRedNeighbours > 3):
                     newGameState[x,y] = 0
+                elif gameState[x,y] == 1 and (nRedNeighbours == 1):
+                    newGameState[x,y] = 0
+                elif gameState[x,y] == 2 and (nWhiteNeighbours >= 2):
+                    newGameState[x,y] = 1
+                # elif gameState[x,y] == 2 and (nWhiteNeighbours == 2):
+                #     newGameState[x,y] = 0    
                 
                 
 
