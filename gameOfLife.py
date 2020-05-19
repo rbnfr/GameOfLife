@@ -23,6 +23,8 @@ dimCellHeight = height / cellsY
 # Cells state. Aalive = 1, dead = 0
 gameState = np.zeros((cellsX, cellsY))
 aliveCells = 0
+redCells = 0
+whiteCells = 0
 
 # Excecution control
 pauseExecution = True
@@ -141,22 +143,26 @@ while not endGame:
             if newGameState[x,y] == 0:
                 pygame.draw.polygon(screen, (128, 128, 128), polygon, 1) # Background, points, polygon, line width. Hollow Gray
             elif newGameState[x,y] == 2:
-                aliveCells += 1
+                redCells +=1
                 pygame.draw.polygon(screen, (255, 0, 0), polygon, 0) # Background, points, polygon, line width. Hollow Gray
             else:
-                aliveCells += 1
+                whiteCells +=1
                 pygame.draw.polygon(screen, (255, 255, 255), polygon, 0) # Background, points, polygon, line width. Solid White
 
     if not pauseExecution:
         draw_text(screen, str("Running"), 15, (width - (width*0.95)), (height-(height*0.99)), (0,255,0), bgColor)
     else:
         draw_text(screen, str("Stopped"), 15, (width - (width*0.95)), (height-(height*0.99)), (255,0,0), bgColor)
-        
-    if aliveCells == 0:
+    if (redCells + whiteCells) == 0:
         pauseExecution = True
 
-    draw_text(screen, ("Alive Cells: " + str(aliveCells)), 30, (width/2), (height-(height*0.99)), (255,255,255), bgColor)
+    draw_text(screen, ("Alive: " + str(redCells + whiteCells)), 30, (width/2), (height-(height*0.99)), (255,255,255), bgColor)
+    draw_text(screen, ("Red: "   + str(redCells)),              15, (width/2) - 90, (height-(height*0.99)), (255,255,255), bgColor)
+    draw_text(screen, ("White: " + str(whiteCells)),            15, (width/2) + 90, (height-(height*0.99)), (255,255,255), bgColor)
+    # (surface, text, size, x, y, fontColor, backgroundColor)
     aliveCells = 0
+    whiteCells = 0
+    redCells   = 0
 
     gameState = np.copy(newGameState)
     pygame.display.flip()
