@@ -157,8 +157,8 @@ while not endGame:
         pauseExecution = True
 
     draw_text(screen, ("Alive: " + str(redCells + whiteCells)), 30, (width/2), (height-(height*0.99)), (255,255,255), bgColor)
-    draw_text(screen, ("Red: "   + str(redCells)),              15, (width/2) - 90, (height-(height*0.99)), (255,255,255), bgColor)
-    draw_text(screen, ("White: " + str(whiteCells)),            15, (width/2) + 90, (height-(height*0.99)), (255,255,255), bgColor)
+    draw_text(screen, ("Red: "   + str(redCells)),              20, (width/2) - 90, (height-(height*0.99)), (255,255,255), bgColor)
+    draw_text(screen, ("White: " + str(whiteCells)),            20, (width/2) + 90, (height-(height*0.99)), (255,255,255), bgColor)
     # (surface, text, size, x, y, fontColor, backgroundColor)
     aliveCells = 0
     whiteCells = 0
