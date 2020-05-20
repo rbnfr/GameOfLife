@@ -35,6 +35,26 @@ sleepTime = 0.1
 fontName = pygame.font.match_font('arial')
 fontColor = (255,255,255)
 bgColor = (0,0,0)
+
+cellColors = ['red', 'green', 'blue', 'white', 'yellow']
+cellTypes  = 2
+cellTypesStore = {}
+
+for z in range(0, cellTypes):
+    # Claculate the near neighbours
+    cellTypesStore["n"+cellColors[z]+"neighbours"] = cellTypesStore.get("n"+cellColors[z]+"neighbours", z)
+    nNeighbours = (
+          gameState[(x - 1) % cellsX, (y - 1) % cellsY]
+        + gameState[x       % cellsX, (y - 1) % cellsY]
+        + gameState[(x + 1) % cellsX, (y - 1) % cellsY]
+        + gameState[(x - 1) % cellsX,  y      % cellsY]
+        + gameState[(x + 1) % cellsX,  y      % cellsY]
+        + gameState[(x - 1) % cellsX, (y + 1) % cellsY]
+        + gameState[x      % cellsX,  (y + 1) % cellsY]
+        + gameState[(x + 1) % cellsX, (y + 1) % cellsY]
+    )
+
+
 def draw_text(surface, text, size, x, y, fontColor, backgroundColor):
     font = pygame.font.Font(fontName, size)
     text_surfaceace = font.render(text, True, fontColor, backgroundColor)
@@ -79,18 +99,7 @@ while not endGame:
     for y in range(0, cellsX):
         for x in range (0, cellsY):
             if not pauseExecution:
-                # Claculate the near neighbours
-                nNeighbours = (
-                      gameState[(x - 1) % cellsX, (y - 1) % cellsY]
-                    + gameState[x       % cellsX, (y - 1) % cellsY]
-                    + gameState[(x + 1) % cellsX, (y - 1) % cellsY]
-                    + gameState[(x - 1) % cellsX,  y      % cellsY]
-                    + gameState[(x + 1) % cellsX,  y      % cellsY]
-                    + gameState[(x - 1) % cellsX, (y + 1) % cellsY]
-                    + gameState[x      % cellsX,  (y + 1) % cellsY]
-                    + gameState[(x + 1) % cellsX, (y + 1) % cellsY]
-                )
-
+                
                 nWhiteNeighbours = (
                       ((gameState[(x - 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y - 1) % cellsY]) == 1 else 0)
                     + ((gameState[x       % cellsX, (y - 1) % cellsY]) if (gameState[x       % cellsX, (y - 1) % cellsY]) == 1 else 0)
