@@ -42,17 +42,17 @@ cellTypesStore = {}
 
 for z in range(0, cellTypes):
     # Claculate the near neighbours
-    cellTypesStore["n"+cellColors[z]+"neighbours"] = cellTypesStore.get("n"+cellColors[z]+"neighbours", z)
-    nNeighbours = (
-          gameState[(x - 1) % cellsX, (y - 1) % cellsY]
-        + gameState[x       % cellsX, (y - 1) % cellsY]
-        + gameState[(x + 1) % cellsX, (y - 1) % cellsY]
-        + gameState[(x - 1) % cellsX,  y      % cellsY]
-        + gameState[(x + 1) % cellsX,  y      % cellsY]
-        + gameState[(x - 1) % cellsX, (y + 1) % cellsY]
-        + gameState[x      % cellsX,  (y + 1) % cellsY]
-        + gameState[(x + 1) % cellsX, (y + 1) % cellsY]
-    )
+    cellTypesStore[z] = cellTypesStore.get(z, str(cellColors[z]))
+    # nNeighbours = (
+    #       gameState[(x - 1) % cellsX, (y - 1) % cellsY]
+    #     + gameState[x       % cellsX, (y - 1) % cellsY]
+    #     + gameState[(x + 1) % cellsX, (y - 1) % cellsY]
+    #     + gameState[(x - 1) % cellsX,  y      % cellsY]
+    #     + gameState[(x + 1) % cellsX,  y      % cellsY]
+    #     + gameState[(x - 1) % cellsX, (y + 1) % cellsY]
+    #     + gameState[x      % cellsX,  (y + 1) % cellsY]
+    #     + gameState[(x + 1) % cellsX, (y + 1) % cellsY]
+    # )
 
 
 def draw_text(surface, text, size, x, y, fontColor, backgroundColor):
@@ -100,7 +100,7 @@ while not endGame:
         for x in range (0, cellsY):
             if not pauseExecution:
                 
-                nWhiteNeighbours = (
+                nWhiteNeighbours = int((
                       ((gameState[(x - 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y - 1) % cellsY]) == 1 else 0)
                     + ((gameState[x       % cellsX, (y - 1) % cellsY]) if (gameState[x       % cellsX, (y - 1) % cellsY]) == 1 else 0)
                     + ((gameState[(x + 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y - 1) % cellsY]) == 1 else 0)
@@ -109,7 +109,7 @@ while not endGame:
                     + ((gameState[(x - 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y + 1) % cellsY]) == 1 else 0)
                     + ((gameState[x      % cellsX,  (y + 1) % cellsY]) if (gameState[x      % cellsX,  (y + 1) % cellsY]) == 1 else 0)
                     + ((gameState[(x + 1) % cellsX, (y + 1) % cellsY]) if (gameState[(x + 1) % cellsX, (y + 1) % cellsY]) == 1 else 0)
-                )
+                ))
 
                 nRedNeighbours = int((
                       ((gameState[(x - 1) % cellsX, (y - 1) % cellsY]) if (gameState[(x - 1) % cellsX, (y - 1) % cellsY]) == 2 else 0)
