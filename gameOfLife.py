@@ -5,7 +5,10 @@ import numpy as np
 import pygame
 import time
 
+from pygame.constants import MOUSEWHEEL
+
 pygame.init()
+pygame.display.set_caption('Game of Life')
 
 width  = 700
 height = 700
@@ -30,7 +33,7 @@ whiteCells = 0
 pauseExecution = True
 endGame = False
 activateOutput = False
-sleepTime = 0.1
+sleepTime = 0.5
 
 fontName = pygame.font.match_font('arial')
 fontColor = (255,255,255)
@@ -46,7 +49,8 @@ def draw_text(surface, text, size, x, y, fontColor, backgroundColor):
 while not endGame:
     newGameState = np.copy(gameState)
     screen.fill(background)
-    time.sleep(sleepTime)
+    if sleepTime > 0:
+        time.sleep(round(sleepTime, 2))
 
     ev = pygame.event.get()
 
@@ -57,10 +61,15 @@ while not endGame:
         if event.type == pygame.KEYDOWN:
             pauseExecution = not pauseExecution
             screen.fill(background)
+        
+        if event.type == MOUSEWHEEL:
+            if (sleepTime > 0 and sleepTime > 0.01) or event.y == -1:
+                sleepTime -= round(event.y, 1)/100
+            print(sleepTime)
 
         mouseClick = pygame.mouse.get_pressed()
 
-        if sum(mouseClick) > 0:
+        if mouseClick[0]:
             posX,posY = pygame.mouse.get_pos()
             cellX = int(np.floor(posX / dimCellWidth))
             cellY = int(np.floor(posY / dimCellHeight))
@@ -69,7 +78,12 @@ while not endGame:
             elif newGameState[cellX, cellY] == 1:
                 newGameState[cellX, cellY] = 2
             elif newGameState[cellX, cellY] == 2:
-                newGameState[cellX, cellY] = 0
+                newGameState[cellX, cellY] = 1
+        elif mouseClick[2]:
+            posX,posY = pygame.mouse.get_pos()
+            cellX = int(np.floor(posX / dimCellWidth))
+            cellY = int(np.floor(posY / dimCellHeight))
+            newGameState[cellX, cellY] = 0
 
         if mouseClick[1]:
             pauseExecution = not pauseExecution
@@ -124,11 +138,13 @@ while not endGame:
                 elif gameState[x,y] == 2 and (nRedNeighbours < 2 or nRedNeighbours > 3):
                     newGameState[x,y] = 0
                 elif gameState[x,y] == 1 and (nRedNeighbours == 1):
-                    newGameState[x,y] = 0
+                    newGameState[x,y] = 2
                 elif gameState[x,y] == 2 and (nWhiteNeighbours >= 2):
                     newGameState[x,y] = 1
-                # elif gameState[x,y] == 2 and (nWhiteNeighbours == 2):
-                #     newGameState[x,y] = 0    
+                elif gameState[x,y] == 2 and (nWhiteNeighbours == 1):
+                    newGameState[x+1,y+1] = 2
+                elif gameState[x,y] == 2 and (nRedNeighbours == 1):
+                    newGameState[x+1,y+1] = 2   
                 
                 
 
@@ -150,12 +166,15 @@ while not endGame:
                 pygame.draw.polygon(screen, (255, 255, 255), polygon, 0) # Background, points, polygon, line width. Solid White
 
     if not pauseExecution:
+        pygame.display.set_caption('Game of Life - Running')
         draw_text(screen, str("Running"), 15, (width - (width*0.95)), (height-(height*0.99)), (0,255,0), bgColor)
     else:
         draw_text(screen, str("Stopped"), 15, (width - (width*0.95)), (height-(height*0.99)), (255,0,0), bgColor)
     if (redCells + whiteCells) == 0:
+        pygame.display.set_caption('Game of Life - Ended')
         pauseExecution = True
 
+    pygame.display.set_caption('Game of Life '+str(redCells+whiteCells))
     draw_text(screen, ("Alive: " + str(redCells + whiteCells)), 30, (width/2), (height-(height*0.99)), (255,255,255), bgColor)
     draw_text(screen, ("Red: "   + str(redCells)),              20, (width/2) - 90, (height-(height*0.99)), (255,255,255), bgColor)
     draw_text(screen, ("White: " + str(whiteCells)),            20, (width/2) + 90, (height-(height*0.99)), (255,255,255), bgColor)
